@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option go_package = "./pb";
+
+service FeatureFlag {
+  rpc CreateBooleanFeatureFlag (CreateBooleanFeatureFlagRequest) returns (CreateBooleanFeatureFlagResponse);
+}
+
+message BooleanEnviroment {
+  string name = 1;
+  bool active = 2;
+  repeated bool onActiveValues = 3; 
+}
+
+message CreateBooleanFeatureFlagRequest {
+  string name = 1;
+  bool active = 2;
+  repeated BooleanEnviroment enviroments = 3; 
+}
+
+message CreateBooleanFeatureFlagResponse {
+  string id = 1;
+}
