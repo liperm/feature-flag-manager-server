@@ -18,14 +18,10 @@ func NewFeatureFlagServer(logger logger.CustomLogger) *FeatureFlagServer {
 }
 
 func (s *FeatureFlagServer) CreateBooleanFeatureFlag(ctx context.Context, request *pb.CreateBooleanFeatureFlagRequest) (*pb.CreateBooleanFeatureFlagResponse, error) {
-	s.logger.Request(request)
-
 	result, err := handlers.CreateBooleanFeatureFlag(*request)
 	if err != nil {
-		s.logger.Error(err)
 		return nil, err
 	}
 
-	s.logger.Response(result)
 	return result, nil
 }

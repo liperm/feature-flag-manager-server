@@ -27,44 +27,41 @@ func Init() {
 }
 
 func (l *CustomLogger) Request(r interface{}) {
-	pc, _, _, ok := runtime.Caller(1)
-	details := runtime.FuncForPC(pc)
-	if ok && details != nil {
-		method := getCallerFunctionName(details)
-		l.write("Request", method, r)
-		return
-	}
+	method := getCallerFunctionName()
+	l.write("Request", method, r)
+	return
+}
 
-	l.write("Request", "UKNOWN", r)
+func (l *CustomLogger) RequestToMethod(method string, r interface{}) {
+	l.write("Request", method, r)
 }
 
 func (l *CustomLogger) Response(r interface{}) {
-	pc, _, _, ok := runtime.Caller(1)
-	details := runtime.FuncForPC(pc)
-	if ok && details != nil {
-		method := getCallerFunctionName(details)
-		l.write("Response", method, r)
-		return
-	}
+	method := getCallerFunctionName()
+	l.write("Response", method, r)
+}
 
-	l.write("Response", "UKNOWN", r)
+func (l *CustomLogger) ResponseFromMethod(method string, r interface{}) {
+	l.write("Response", method, r)
 }
 
 func (l *CustomLogger) Error(e error) {
-	pc, _, _, ok := runtime.Caller(1)
-	details := runtime.FuncForPC(pc)
-	if ok && details != nil {
-		method := getCallerFunctionName(details)
-		formattedMethod := fmt.Sprintf("[%s]:", method)
-		l.logger.Println(formattedMethod, "ERROR", e.Error())
-	}
-
-	formattedMethod := fmt.Sprintf("[%s]:", "UNKNOWN")
+	method := getCallerFunctionName()
+	formattedMethod := l.formatMethod(method)
 	l.logger.Println(formattedMethod, "ERROR", e.Error())
 }
 
-func (l *CustomLogger) write(ctx string, method string, r interface{}) {
+func (l *CustomLogger) ErrorFromMethod(method string, e error) {
+	formattedMethod := l.formatMethod(method)
+	l.logger.Println(formattedMethod, "ERROR", e.Error())
+}
+func (l *CustomLogger) formatMethod(method string) string {
 	formattedMethod := fmt.Sprintf("[%s]:", method)
+	return formattedMethod
+}
+
+func (l *CustomLogger) write(ctx string, method string, r interface{}) {
+	formattedMethod := l.formatMethod(method)
 	requestJson, err := json.Marshal(r)
 	if err != nil {
 		fmt.Println(fmt.Sprintf("Error logging %s", ctx), err)
@@ -73,8 +70,15 @@ func (l *CustomLogger) write(ctx string, method string, r interface{}) {
 	l.logger.Println(formattedMethod, fmt.Sprintf("%s Received", ctx), string(requestJson))
 }
 
-func getCallerFunctionName(details *runtime.Func) string {
-	splitDetails := strings.Split(details.Name(), ".")
-	functionName := splitDetails[len(splitDetails)-1]
+func getCallerFunctionName() string {
+	functionName := "UNKNOWN"
+
+	pc, _, _, ok := runtime.Caller(2)
+	details := runtime.FuncForPC(pc)
+	if ok && details != nil {
+		splitDetails := strings.Split(details.Name(), ".")
+		functionName = splitDetails[len(splitDetails)-1]
+	}
+
 	return functionName
 }

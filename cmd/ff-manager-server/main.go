@@ -7,6 +7,7 @@ import (
 	"github.com/liperm/ff-manager-server/api/pb"
 	"github.com/liperm/ff-manager-server/internal/controllers"
 	"github.com/liperm/ff-manager-server/internal/db"
+	"github.com/liperm/ff-manager-server/internal/interceptors"
 	"github.com/liperm/ff-manager-server/pkg/logger"
 	"google.golang.org/grpc"
 )
@@ -20,7 +21,7 @@ func main() {
 		panic(err)
 	}
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(grpc.UnaryInterceptor(interceptors.LoggerInterceptor))
 	ffServer := controllers.NewFeatureFlagServer(logger.Logger)
 	pb.RegisterFeatureFlagServer(s, ffServer)
 	if err := s.Serve(listener); err != nil {
