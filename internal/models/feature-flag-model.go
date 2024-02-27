@@ -8,7 +8,7 @@ import (
 
 type FeatureFlagType interface{ bool | int64 }
 
-type Enviroment[T FeatureFlagType] struct {
+type Environment[T FeatureFlagType] struct {
 	Id             primitive.ObjectID `bson:"_id"`
 	Name           string             `bson:"name"`
 	Active         bool               `bson:"active"`
@@ -18,14 +18,14 @@ type Enviroment[T FeatureFlagType] struct {
 type FeatureFlag[T FeatureFlagType] struct {
 	Id          primitive.ObjectID `bson:"_id"`
 	Name        string             `bson:"name"`
-	Enviroments []Enviroment[T]    `bson:"enviroments"`
+	Enviroments []Environment[T]   `bson:"enviroments"`
 	Active      bool               `bson:"active"`
 	CreatedAt   time.Time          `bson:"created_at"`
 	UpdatedAt   time.Time          `bson:"updated_at"`
 }
 
-func NewEnviroment[T FeatureFlagType](name string, active bool, values []T) *Enviroment[T] {
-	return &Enviroment[T]{
+func NewEnvironment[T FeatureFlagType](name string, active bool, values []T) *Environment[T] {
+	return &Environment[T]{
 		Id:             primitive.NewObjectID(),
 		Name:           name,
 		Active:         active,
@@ -33,7 +33,7 @@ func NewEnviroment[T FeatureFlagType](name string, active bool, values []T) *Env
 	}
 }
 
-func NewFeatureFlag[T FeatureFlagType](name string, active bool, envs []Enviroment[T]) *FeatureFlag[T] {
+func NewFeatureFlag[T FeatureFlagType](name string, active bool, envs []Environment[T]) *FeatureFlag[T] {
 	return &FeatureFlag[T]{
 		Id:          primitive.NewObjectID(),
 		Name:        name,
