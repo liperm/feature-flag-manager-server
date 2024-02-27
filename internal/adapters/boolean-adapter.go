@@ -8,15 +8,15 @@ import (
 type BooleanAdapter struct{}
 
 func (a *BooleanAdapter) GetFeatureFlag(r pb.CreateBooleanFeatureFlagRequest) models.FeatureFlag[bool] {
-	enviroments := a.getEnviroments(r.Enviroments)
-	featureFlag := models.NewFeatureFlag[bool](r.Name, r.Active, enviroments)
+	environments := a.getEnviroments(r.Enviroments)
+	featureFlag := models.NewFeatureFlag[bool](r.Name, r.Active, r.OnActiveValues, environments)
 	return *featureFlag
 }
 
-func (a *BooleanAdapter) getEnviroments(requestedEnviroment []*pb.BooleanEnviroment) []models.Environment[bool] {
-	var enviroments []models.Environment[bool]
+func (a *BooleanAdapter) getEnviroments(requestedEnviroment []*pb.Environment) []models.Environment {
+	var enviroments []models.Environment
 	for _, r := range requestedEnviroment {
-		newEnviroment := models.NewEnvironment[bool](r.Name, r.Active, r.OnActiveValues)
+		newEnviroment := models.NewEnvironment(r.Name, r.Active)
 		enviroments = append(enviroments, *newEnviroment)
 	}
 

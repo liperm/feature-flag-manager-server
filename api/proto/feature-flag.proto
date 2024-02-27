@@ -6,16 +6,16 @@ service FeatureFlag {
   rpc CreateBooleanFeatureFlag (CreateBooleanFeatureFlagRequest) returns (CreateBooleanFeatureFlagResponse);
 }
 
-message BooleanEnvironment {
+message Environment {
   string name = 1;
   bool active = 2;
-  repeated bool onActiveValues = 3; 
 }
 
 message CreateBooleanFeatureFlagRequest {
   string name = 1;
   bool active = 2;
-  repeated BooleanEnvironment enviroments = 3; 
+  repeated bool onActiveValues = 3;
+  repeated Environment enviroments = 4; 
 }
 
 message CreateBooleanFeatureFlagResponse {
