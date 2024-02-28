@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func CreateFeatureFlag[T models.FeatureFlagType](featureFlag models.FeatureFlag[T]) (string, error) {
+func PersistFeatureFlag[T models.FeatureFlagType](featureFlag models.FeatureFlag[T]) (string, error) {
 	result, err := db.Collection.InsertOne(db.Ctx, featureFlag)
 	if err != nil {
 		return "", err
