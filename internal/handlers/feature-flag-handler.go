@@ -2,15 +2,32 @@ package handlers
 
 import (
 	"github.com/liperm/ff-manager-server/api/pb"
-	"github.com/liperm/ff-manager-server/internal/adapters"
+	"github.com/liperm/ff-manager-server/internal/models"
 	"github.com/liperm/ff-manager-server/internal/repository"
 )
 
 func CreateBooleanFeatureFlag(request pb.CreateBooleanFeatureFlagRequest) (*pb.CreateBooleanFeatureFlagResponse, error) {
-	adapter := adapters.BooleanAdapter{}
+	featureFlag := newGenericFeatureFlag[bool](request.Name, true, request.OnActiveValues, request.Enviroments)
 
-	featureFlag := adapter.GetFeatureFlag(request)
-	result, err := repository.CreateFeatureFlag[bool](featureFlag)
+	result, err := repository.PersistFeatureFlag[bool](*featureFlag)
 
 	return &pb.CreateBooleanFeatureFlagResponse{Id: result}, err
+}
+
+func newGenericFeatureFlag[T models.FeatureFlagType](ffName string, active bool, values []T, environmentRequest []*pb.Environment) *models.FeatureFlag[T] {
+	envs := newEnvironments(environmentRequest)
+
+	featureFlag := models.NewFeatureFlag[T](ffName, active, values, envs)
+
+	return featureFlag
+}
+
+func newEnvironments(requestedEnviroment []*pb.Environment) []models.Environment {
+	var environments []models.Environment
+	for _, r := range requestedEnviroment {
+		newEnviroment := models.NewEnvironment(r.Name, r.Active)
+		environments = append(environments, *newEnviroment)
+	}
+
+	return environments
 }

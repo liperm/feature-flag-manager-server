@@ -13,7 +13,6 @@ message Environment {
 
 message CreateBooleanFeatureFlagRequest {
   string name = 1;
-  bool active = 2;
   repeated bool onActiveValues = 3;
   repeated Environment enviroments = 4; 
 }
