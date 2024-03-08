@@ -9,11 +9,11 @@ import (
 )
 
 type FeatureFlagServer struct {
-	pb.UnimplementedFeatureFlagServer
+	pb.UnimplementedFeatureFlagCreationServer
 	logger logger.CustomLogger
 }
 
-func NewFeatureFlagServer(logger logger.CustomLogger) *FeatureFlagServer {
+func NewFeatureFlagCreationServer(logger logger.CustomLogger) *FeatureFlagServer {
 	return &FeatureFlagServer{logger: logger}
 }
 

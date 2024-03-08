@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "./pb";
 
-service FeatureFlag {
+service FeatureFlagCreation {
   rpc CreateBooleanFeatureFlag (CreateBooleanFeatureFlagRequest) returns (CreateFeatureFlagResponse);
   rpc CreateInt64FeatureFlag (CreateInt64FeatureFlagRequest) returns (CreateFeatureFlagResponse);
 }

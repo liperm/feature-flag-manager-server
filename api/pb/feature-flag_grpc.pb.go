@@ -18,122 +18,122 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// FeatureFlagClient is the client API for FeatureFlag service.
+// FeatureFlagCreationClient is the client API for FeatureFlagCreation service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type FeatureFlagClient interface {
+type FeatureFlagCreationClient interface {
 	CreateBooleanFeatureFlag(ctx context.Context, in *CreateBooleanFeatureFlagRequest, opts ...grpc.CallOption) (*CreateFeatureFlagResponse, error)
 	CreateInt64FeatureFlag(ctx context.Context, in *CreateInt64FeatureFlagRequest, opts ...grpc.CallOption) (*CreateFeatureFlagResponse, error)
 }
 
-type featureFlagClient struct {
+type featureFlagCreationClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewFeatureFlagClient(cc grpc.ClientConnInterface) FeatureFlagClient {
-	return &featureFlagClient{cc}
+func NewFeatureFlagCreationClient(cc grpc.ClientConnInterface) FeatureFlagCreationClient {
+	return &featureFlagCreationClient{cc}
 }
 
-func (c *featureFlagClient) CreateBooleanFeatureFlag(ctx context.Context, in *CreateBooleanFeatureFlagRequest, opts ...grpc.CallOption) (*CreateFeatureFlagResponse, error) {
+func (c *featureFlagCreationClient) CreateBooleanFeatureFlag(ctx context.Context, in *CreateBooleanFeatureFlagRequest, opts ...grpc.CallOption) (*CreateFeatureFlagResponse, error) {
 	out := new(CreateFeatureFlagResponse)
-	err := c.cc.Invoke(ctx, "/FeatureFlag/CreateBooleanFeatureFlag", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/FeatureFlagCreation/CreateBooleanFeatureFlag", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *featureFlagClient) CreateInt64FeatureFlag(ctx context.Context, in *CreateInt64FeatureFlagRequest, opts ...grpc.CallOption) (*CreateFeatureFlagResponse, error) {
+func (c *featureFlagCreationClient) CreateInt64FeatureFlag(ctx context.Context, in *CreateInt64FeatureFlagRequest, opts ...grpc.CallOption) (*CreateFeatureFlagResponse, error) {
 	out := new(CreateFeatureFlagResponse)
-	err := c.cc.Invoke(ctx, "/FeatureFlag/CreateInt64FeatureFlag", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/FeatureFlagCreation/CreateInt64FeatureFlag", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// FeatureFlagServer is the server API for FeatureFlag service.
-// All implementations must embed UnimplementedFeatureFlagServer
+// FeatureFlagCreationServer is the server API for FeatureFlagCreation service.
+// All implementations must embed UnimplementedFeatureFlagCreationServer
 // for forward compatibility
-type FeatureFlagServer interface {
+type FeatureFlagCreationServer interface {
 	CreateBooleanFeatureFlag(context.Context, *CreateBooleanFeatureFlagRequest) (*CreateFeatureFlagResponse, error)
 	CreateInt64FeatureFlag(context.Context, *CreateInt64FeatureFlagRequest) (*CreateFeatureFlagResponse, error)
-	mustEmbedUnimplementedFeatureFlagServer()
+	mustEmbedUnimplementedFeatureFlagCreationServer()
 }
 
-// UnimplementedFeatureFlagServer must be embedded to have forward compatible implementations.
-type UnimplementedFeatureFlagServer struct {
+// UnimplementedFeatureFlagCreationServer must be embedded to have forward compatible implementations.
+type UnimplementedFeatureFlagCreationServer struct {
 }
 
-func (UnimplementedFeatureFlagServer) CreateBooleanFeatureFlag(context.Context, *CreateBooleanFeatureFlagRequest) (*CreateFeatureFlagResponse, error) {
+func (UnimplementedFeatureFlagCreationServer) CreateBooleanFeatureFlag(context.Context, *CreateBooleanFeatureFlagRequest) (*CreateFeatureFlagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBooleanFeatureFlag not implemented")
 }
-func (UnimplementedFeatureFlagServer) CreateInt64FeatureFlag(context.Context, *CreateInt64FeatureFlagRequest) (*CreateFeatureFlagResponse, error) {
+func (UnimplementedFeatureFlagCreationServer) CreateInt64FeatureFlag(context.Context, *CreateInt64FeatureFlagRequest) (*CreateFeatureFlagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateInt64FeatureFlag not implemented")
 }
-func (UnimplementedFeatureFlagServer) mustEmbedUnimplementedFeatureFlagServer() {}
+func (UnimplementedFeatureFlagCreationServer) mustEmbedUnimplementedFeatureFlagCreationServer() {}
 
-// UnsafeFeatureFlagServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to FeatureFlagServer will
+// UnsafeFeatureFlagCreationServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to FeatureFlagCreationServer will
 // result in compilation errors.
-type UnsafeFeatureFlagServer interface {
-	mustEmbedUnimplementedFeatureFlagServer()
+type UnsafeFeatureFlagCreationServer interface {
+	mustEmbedUnimplementedFeatureFlagCreationServer()
 }
 
-func RegisterFeatureFlagServer(s grpc.ServiceRegistrar, srv FeatureFlagServer) {
-	s.RegisterService(&FeatureFlag_ServiceDesc, srv)
+func RegisterFeatureFlagCreationServer(s grpc.ServiceRegistrar, srv FeatureFlagCreationServer) {
+	s.RegisterService(&FeatureFlagCreation_ServiceDesc, srv)
 }
 
-func _FeatureFlag_CreateBooleanFeatureFlag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _FeatureFlagCreation_CreateBooleanFeatureFlag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateBooleanFeatureFlagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FeatureFlagServer).CreateBooleanFeatureFlag(ctx, in)
+		return srv.(FeatureFlagCreationServer).CreateBooleanFeatureFlag(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/FeatureFlag/CreateBooleanFeatureFlag",
+		FullMethod: "/FeatureFlagCreation/CreateBooleanFeatureFlag",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FeatureFlagServer).CreateBooleanFeatureFlag(ctx, req.(*CreateBooleanFeatureFlagRequest))
+		return srv.(FeatureFlagCreationServer).CreateBooleanFeatureFlag(ctx, req.(*CreateBooleanFeatureFlagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FeatureFlag_CreateInt64FeatureFlag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _FeatureFlagCreation_CreateInt64FeatureFlag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateInt64FeatureFlagRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FeatureFlagServer).CreateInt64FeatureFlag(ctx, in)
+		return srv.(FeatureFlagCreationServer).CreateInt64FeatureFlag(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/FeatureFlag/CreateInt64FeatureFlag",
+		FullMethod: "/FeatureFlagCreation/CreateInt64FeatureFlag",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FeatureFlagServer).CreateInt64FeatureFlag(ctx, req.(*CreateInt64FeatureFlagRequest))
+		return srv.(FeatureFlagCreationServer).CreateInt64FeatureFlag(ctx, req.(*CreateInt64FeatureFlagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// FeatureFlag_ServiceDesc is the grpc.ServiceDesc for FeatureFlag service.
+// FeatureFlagCreation_ServiceDesc is the grpc.ServiceDesc for FeatureFlagCreation service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var FeatureFlag_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "FeatureFlag",
-	HandlerType: (*FeatureFlagServer)(nil),
+var FeatureFlagCreation_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "FeatureFlagCreation",
+	HandlerType: (*FeatureFlagCreationServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateBooleanFeatureFlag",
-			Handler:    _FeatureFlag_CreateBooleanFeatureFlag_Handler,
+			Handler:    _FeatureFlagCreation_CreateBooleanFeatureFlag_Handler,
 		},
 		{
 			MethodName: "CreateInt64FeatureFlag",
-			Handler:    _FeatureFlag_CreateInt64FeatureFlag_Handler,
+			Handler:    _FeatureFlagCreation_CreateInt64FeatureFlag_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
