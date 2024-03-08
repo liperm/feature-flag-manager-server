@@ -3,7 +3,8 @@ syntax = "proto3";
 option go_package = "./pb";
 
 service FeatureFlag {
-  rpc CreateBooleanFeatureFlag (CreateBooleanFeatureFlagRequest) returns (CreateBooleanFeatureFlagResponse);
+  rpc CreateBooleanFeatureFlag (CreateBooleanFeatureFlagRequest) returns (CreateFeatureFlagResponse);
+  rpc CreateInt64FeatureFlag (CreateInt64FeatureFlagRequest) returns (CreateFeatureFlagResponse);
 }
 
 message Environment {
@@ -17,6 +18,12 @@ message CreateBooleanFeatureFlagRequest {
   repeated Environment enviroments = 4; 
 }
 
-message CreateBooleanFeatureFlagResponse {
+message CreateFeatureFlagResponse {
   string id = 1;
+}
+
+message CreateInt64FeatureFlagRequest {
+  string name = 1;
+  repeated int64 onActiveValues = 3;
+  repeated Environment enviroments = 4; 
 }

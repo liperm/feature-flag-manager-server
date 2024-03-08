@@ -6,12 +6,20 @@ import (
 	"github.com/liperm/ff-manager-server/internal/repository"
 )
 
-func CreateBooleanFeatureFlag(request pb.CreateBooleanFeatureFlagRequest) (*pb.CreateBooleanFeatureFlagResponse, error) {
+func CreateBooleanFeatureFlag(request pb.CreateBooleanFeatureFlagRequest) (*pb.CreateFeatureFlagResponse, error) {
 	featureFlag := newGenericFeatureFlag[bool](request.Name, true, request.OnActiveValues, request.Enviroments)
 
 	result, err := repository.PersistFeatureFlag[bool](*featureFlag)
 
-	return &pb.CreateBooleanFeatureFlagResponse{Id: result}, err
+	return &pb.CreateFeatureFlagResponse{Id: result}, err
+}
+
+func CreateInt64FeatureFlag(request pb.CreateInt64FeatureFlagRequest) (*pb.CreateFeatureFlagResponse, error) {
+	featureFlag := newGenericFeatureFlag[int64](request.Name, true, request.OnActiveValues, request.Enviroments)
+
+	result, err := repository.PersistFeatureFlag[int64](*featureFlag)
+
+	return &pb.CreateFeatureFlagResponse{Id: result}, err
 }
 
 func newGenericFeatureFlag[T models.FeatureFlagType](ffName string, active bool, values []T, environmentRequest []*pb.Environment) *models.FeatureFlag[T] {
